@@ -1,15 +1,8 @@
-const pipe = require('callbag-pipe');
 const map = require('callbag-map');
 const flatten = require('callbag-flatten');
 
-const switchmap = (mapper, flattener = ((_, result) => result)) => source => pipe(
-    source,
-    map(orig => pipe(
-            mapper(orig),
-            map(next => flattener(orig, next)),
-            )),
-    flatten,
-);
+const switchmap = mapper => source => flatten(map(mapper)(source))
+
 /*
 If I write the above without pipes, it'd be a bit impenetrable:
 ```js
